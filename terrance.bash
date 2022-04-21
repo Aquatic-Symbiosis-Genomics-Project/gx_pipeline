@@ -30,7 +30,7 @@ TAXID=$3
 # could be submitted with [select tmp>500000] rusage[tmp=500000]
 
 # docker run --name retrieve_db -v $GXDB:/app/db/gxdb cgr-fcs-genome python3 /app/bin/retrieve_db --gx-db /app/db/gxdb/test-only
-echo singularity exec -B $GXDB:/app/db/gxdb,$DISK:/db-disk-volume $SINGULARITY python3 /app/bin/retrieve_db --gx-db /app/db/gxdb/$DB --gx-db-disk /db-disk-volume/
+singularity exec -B $GXDB:/app/db/gxdb,$DISK:/db-disk-volume $SINGULARITY python3 /app/bin/retrieve_db --gx-db /app/db/gxdb/$DB --gx-db-disk /db-disk-volume/
 
 # docker run --name run_gx -v $GXDB:/app/db/gxdb -v $FASTADIR:/sample-volume -v $OUTDIR:/output-volume ncbi/cgr-fcs-genome:v1alpha1-latest python3 /app/bin/run_gx --fasta /sample-volume/fcsgenome_test.fa.gz --out-dir /output-volume --gx-db /app/db/gxdb/test-only --tax-id 6973 --debug --split-fasta
-singularity exec -B /lustre/scratch123/tol/teams/grit/mh6/ncbi-decon/bleh:/app/bin,$GXDB:/app/db/gxdb,$FASTADIR:/sample-volume,$OUTDIR:/output-volume $SINGULARITY python3 /app/bin/run_gx --fasta /sample-volume/$FASTANAME --out-dir /output-volume --gx-db /app/db/gxdb/$DB --tax-id $TAXID --debug --split-fasta
+# singularity exec -B /lustre/scratch123/tol/teams/grit/mh6/ncbi-decon/bleh:/app/bin,$GXDB:/app/db/gxdb,$FASTADIR:/sample-volume,$OUTDIR:/output-volume $SINGULARITY python3 /app/bin/run_gx --fasta /sample-volume/$FASTANAME --out-dir /output-volume --gx-db /app/db/gxdb/$DB --tax-id $TAXID --debug --split-fasta
