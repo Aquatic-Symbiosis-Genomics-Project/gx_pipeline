@@ -42,16 +42,14 @@ cp -r /lustre/scratch123/tol/teams/grit/mh6/ncbi-decon/bleh/* $GXDB/bin
 for file in "${multi[@]}"; do
 	fasta = `realpath $file`
 	# check if file does exist
-	if [[ ! -f $fasta ]]; then
-		echo "$fasta doesn't exist"
-		rm -rf $GXDB
-		exit 1
-	fi
-	
-	FASTADIR=${fasta%/*}
-	FASTANAME=${fasta##*/}
+	if [[ -f $fasta ]]; then
+		FASTADIR=${fasta%/*}
+		FASTANAME=${fasta##*/}
 
-	singularity exec -B $GXDB/bin:/app/bin,$GXDB:/app/db/gxdb,$FASTADIR:/sample-volume,$OUTDIR:/output-volume $SINGULARITY python3 /app/bin/run_gx --fasta /sample-volume/$FASTANAME --out-dir /output-volume --gx-db /app/db/gxdb/all --tax-id $TAXID --debug --split-fasta
+		singularity exec -B $GXDB/bin:/app/bin,$GXDB:/app/db/gxdb,$FASTADIR:/sample-volume,$OUTDIR:/output-volume $SINGULARITY python3 /app/bin/run_gx --fasta /sample-volume/$FASTANAME --out-dir /output-volume --gx-db /app/db/gxdb/all --tax-id $TAXID --debug --split-fasta
+	else
+		echo "$fasta doesn't exist"
+	fi
 done
 
 rm -rf $GXDB
