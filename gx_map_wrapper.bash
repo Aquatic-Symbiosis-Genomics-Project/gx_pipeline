@@ -39,8 +39,8 @@ cp $DISK/* $GXDB/
 mkdir -p $GXDB/bin
 cp -r /lustre/scratch123/tol/teams/grit/mh6/ncbi-decon/bleh/* $GXDB/bin
 
-for f in "${multi[@]}"; do
-	fasta = `realpath $f`
+for file in "${multi[@]}"; do
+	fasta = `realpath $file`
 	# check if file does exist
 	if [[ ! -f $fasta ]]; then
 		echo "$fasta doesn't exist"
