@@ -27,7 +27,6 @@ while getopts "f:t:ho:" opt; do
     esac
 done
 
-SIF=/lustre/scratch123/tol/teams/grit/mh6/singularity/cgr-fcs-genome.sif
 DISK=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon
 SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/cgr-fcs-genome.sif
 
