@@ -40,7 +40,7 @@ mkdir -p $GXDB/bin
 cp -r /lustre/scratch123/tol/teams/grit/mh6/ncbi-decon/bleh/* $GXDB/bin
 
 for file in "${multi[@]}"; do
-	fasta = `realpath $file`
+	fasta=`realpath $file`
 	# check if file does exist
 	if [[ -f $fasta ]]; then
 		FASTADIR=${fasta%/*}
