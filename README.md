@@ -3,6 +3,7 @@ wrapper for the [NCBI GX pipeline](https://ftp.ncbi.nlm.nih.gov/pub/murphyte/FCS
 
 These are wrappers to run the Singularity version of the NCBI GX pipeline at Sanger
 
+# notes from Terrance Murphy
 Dear Singularity users,
  
 Due to popular demand, we have adapted our FCS-genome tool to work with Singularity. This is an early version that we’re making available to get early feedback. It’s built from our latest codebase with a number of improvements over the currently posted Docker version.
@@ -79,6 +80,6 @@ https://ftp.ncbi.nlm.nih.gov/pub/murphyte/FCS/FCS-genome/examples/fcsgenome_test
 rm -rf "${SHM_LOC}/"
  
  
-Known bugs:
+# Known bugs:
 When using --gx-db-disk ./gxdb option, and when the db is already present in ./gxdb, the program errors out if there is not enough space in ./
 If this happens, just skip this parameter, and proceed to download to shared memory using only the --gx-db parameter.
