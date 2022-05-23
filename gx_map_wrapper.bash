@@ -28,7 +28,7 @@ while getopts "f:t:ho:" opt; do
     esac
 done
 
-DISK=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/gxdb
+DISK=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon
 SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/gx-develop-latest.sif
 
 # speed up things .. that would be also SHM_LOC
