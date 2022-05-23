@@ -30,26 +30,18 @@ while getopts "f:t:ho:" opt; do
     esac
 done
 
-DISK=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon
-SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/cgr-fcs-genome.sif
+DISK=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/gxdb
+SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/gx-develop.sif
 
-# speed up things
+# speed up things .. that would be also SHM_LOC
 GXDB="/tmp/gx_mapper/$$"
 mkdir -p $GXDB
-cp $DISK/* $GXDB/
-
-# so it can run in parallel
-mkdir -p $GXDB/bin
-cp -r /lustre/scratch123/tol/teams/grit/mh6/ncbi-decon/bleh/* $GXDB/bin
 
 for file in "${multi[@]}"; do
 	fasta=`realpath $file`
 	# check if file does exist
 	if [[ -f $fasta ]]; then
-		FASTADIR=${fasta%/*}
-		FASTANAME=${fasta##*/}
-
-		singularity exec -B $GXDB/bin:/app/bin,$GXDB:/app/db/gxdb,$FASTADIR:/sample-volume,$OUTDIR:/output-volume $SINGULARITY python3 /app/bin/run_gx --fasta /sample-volume/$FASTANAME --out-dir /output-volume --gx-db /app/db/gxdb/all --tax-id $TAXID --debug --split-fasta
+		python3 run_fcsgenome.py --fasta $fasta --out-dir $OUTDIR --gx-db "${GXDB}/gxdb/all" --gx-db-disk $DISK --split-fasta --tax-id $TAXID --container-engine=singularity --image=$SINGULARITY
 	else
 		echo "$fasta doesn't exist"
 	fi
