@@ -29,7 +29,7 @@ while getopts "f:t:ho:" opt; do
 done
 
 DISK=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/gxdb
-SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/gx-develop.sif
+SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/gx-develop-latest.sif
 
 # speed up things .. that would be also SHM_LOC
 GXDB="/tmp/gx_mapper/$$"
