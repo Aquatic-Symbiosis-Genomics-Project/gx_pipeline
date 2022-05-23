@@ -32,14 +32,14 @@ DISK=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/gxdb
 SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/gx-develop-latest.sif
 
 # speed up things .. that would be also SHM_LOC
-GXDB="/tmp/gx_mapper/$$"
+GXDB="/tmp/gx_mapper/$$/gxdb"
 mkdir -p $GXDB
 
 for file in "${multi[@]}"; do
 	fasta=`realpath $file`
 	# check if file does exist
 	if [[ -f $fasta ]]; then
-		python3 run_fcsgenome.py --fasta $fasta --out-dir $OUTDIR --gx-db "${GXDB}/gxdb/all" --gx-db-disk $DISK --split-fasta --tax-id $TAXID --container-engine=singularity --image=$SINGULARITY
+		python3 run_fcsgenome.py --fasta $fasta --out-dir $OUTDIR --gx-db "${GXDB}/all" --gx-db-disk $DISK --split-fasta --tax-id $TAXID --container-engine=singularity --image=$SINGULARITY
 	else
 		echo "$fasta doesn't exist"
 	fi
