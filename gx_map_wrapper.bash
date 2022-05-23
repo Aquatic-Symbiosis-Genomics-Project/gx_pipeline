@@ -3,9 +3,7 @@
 # * use something like that: bsub -q normal -o lsf.log -M 128000 -n 48 -R'select[mem>128000, tmp>500G] rusage[mem=128000, tmp=600G]' gx_wrapper.bash -f /my/fasta.fa.gz -o /my/outdir/ -t 1234
 # * as /tmp tends to be either SSD or tmpfs, there is a likelyhood, that we can get away with specifying less memory in the bsub 
 # * uses realpath , which should be installed at Sanger by default
-# * a copy of /app/bin is kept at /lustre/scratch123/tol/teams/grit/mh6/ncbi-decon/bleh/ , so it can be mounted r/w later
 # * $DISK is where the database is stored
-# * original docker image is here: https://hub.docker.com/r/ncbi/cgr-fcs-genome
 
 usage() { 
 cat << EOF
