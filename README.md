@@ -1,7 +1,7 @@
 # gx_pipeline
 wrapper for the [NCBI FCS pipeline](https://ftp.ncbi.nlm.nih.gov/pub/murphyte/FCS/FCS-genome/fcs_genome_readme.html)
 
-These are wrappers to run the Singularity version of the NCBI GX pipeline at Sanger
+These are wrappers to run the Singularity version of the NCBI FCS_genome pipeline at Sanger
 
 # notes from Terrance Murphy
 Dear Singularity users,
