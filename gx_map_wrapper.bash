@@ -28,7 +28,7 @@ while getopts "f:t:ho:" opt; do
     esac
 done
 
-DISK=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon
+DISK=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/0.2.2
 SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/fcs-gx.0.2.2.sif
 
 GXDB="/tmp/gx_mapper/$$/gxdb"
