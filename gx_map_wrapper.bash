@@ -31,6 +31,8 @@ done
 DISK=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/0.2.2
 SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/fcs-gx.0.2.2.sif
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 GXDB="/tmp/gx_mapper/$$/gxdb"
 mkdir -p $GXDB
 
@@ -38,7 +40,7 @@ for file in "${multi[@]}"; do
 	fasta=`realpath $file`
 	# check if file does exist
 	if [[ -f $fasta ]]; then
-		python3 run_fcsgx.py --fasta $fasta --out-dir $OUTDIR --gx-db "${GXDB}/all" --gx-db-disk $DISK --split-fasta --tax-id $TAXID --container-engine=singularity --image=$SINGULARITY
+		python3 $SCRIPT_DIR/run_fcsgx.py --fasta $fasta --out-dir $OUTDIR --gx-db "${GXDB}/all" --gx-db-disk $DISK --split-fasta --tax-id $TAXID --container-engine=singularity --image=$SINGULARITY
 	else
 		echo "$fasta doesn't exist"
 	fi
