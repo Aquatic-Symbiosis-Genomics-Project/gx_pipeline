@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 import os
 from pathlib import Path
@@ -12,7 +13,7 @@ import hashlib
 
 CONTAINER = "run_gx"
 DEFAULT_CONTAINER_DB = "/app/db/gxdb"
-DEFAULT_VERSION = "0.2.2"
+DEFAULT_VERSION = "0.2.3"
 DEFAULT_DOCKER_IMAGE = f"ncbi/fcs-gx:{DEFAULT_VERSION}"
 DEFAULT_SINGULARITY_IMAGE = f"fcs-gx.{DEFAULT_VERSION}.sif"
 # FILE_MANIFEST = "sing-image.manifest"
@@ -37,6 +38,11 @@ class RunGX:
     def __init__(self, args):
         self.args = args
         self.args.container_db = Path(args.container_db)
+
+    def safe_exec(self, args):
+        if self.args.debug:
+            print(" ".join(args))
+        subprocess.run(args, shell=False, check=True, text=True, stdout=sys.stdout, stderr=sys.stderr)
 
     def retrieve_singularity_image(self, local_filename):
         ctx = ssl.create_default_context()
@@ -76,16 +82,11 @@ class RunGX:
 
         docker_image = self.args.docker_image
         container_engine = self.args.container_engine
-        if container_engine == "docker":
-            subprocess.run(
-                [container_engine, "pull", docker_image],
-                shell=False,
-                check=True,
-            )
-        elif container_engine == "singularity":
+        if container_engine == "singularity":
             if docker_image == os.getenv("GX_DOCKER_IMAGE", default=DEFAULT_DOCKER_IMAGE):
                 # image not specified -->> download from the ftp site
                 docker_image = self.retrieve_singularity_image(DEFAULT_SINGULARITY_IMAGE)
+                self.args.docker_image = docker_image
 
         mount_arg = ""
         if container_engine == "docker":
@@ -99,14 +100,12 @@ class RunGX:
             extra_docker_args = [mount_arg, str(expanded_gxdb_disk) + ":/db-disk-volume/"]
             extra_db_args = ["--gx-db-disk", "/db-disk-volume/"]
 
-        name_args = []
         if container_engine == "docker":
-            name_args = ["--name", "retrieve_db"]
+            extra_docker_args.extend(["--tty"])
 
         retrieve_db_args = [
             container_engine,
-            "run",
-            *name_args,
+            "run" if container_engine == "docker" else "exec",
             mount_arg,
             str(expanded_gxdb) + ":" + str(self.args.container_db),
             *extra_docker_args,
@@ -117,13 +116,7 @@ class RunGX:
             str(self.args.container_db / gxdb_name),
             *extra_db_args,
         ]
-        subprocess.run(
-            retrieve_db_args,
-            shell=False,
-            check=True,
-        )
-        if container_engine == "docker":
-            subprocess.run([container_engine, "container", "rm", "retrieve_db"], shell=False, check=True)
+        self.safe_exec(retrieve_db_args)
 
     def run_gx(self):
         expanded_gxdb = Path(os.path.realpath(os.path.dirname(self.args.gx_db)))
@@ -137,13 +130,6 @@ class RunGX:
         container_engine = self.args.container_engine
         docker_image = self.args.docker_image
 
-        if container_engine == "docker":
-            subprocess.run([container_engine, "pull", docker_image], shell=False, check=True)
-
-        name_args = []
-        if container_engine == "docker":
-            name_args = ["--name", CONTAINER]
-
         mount_arg = ""
         if container_engine == "docker":
             mount_arg = "-v"
@@ -152,39 +138,37 @@ class RunGX:
 
         docker_args = [
             container_engine,
-            "run",
-            *name_args,
+            "run" if container_engine == "docker" else "exec",
             mount_arg,
             str(expanded_gxdb) + ":" + str(self.args.container_db),
             mount_arg,
-            str(fasta_path) + ":" + str(Path("/sample-volume/")),
+            str(fasta_path) + ":" + "/sample-volume/",
             mount_arg,
-            str(expanded_output) + ":" + str(Path("/output-volume/")),
+            str(expanded_output) + ":" + "/output-volume/",
             docker_image,
             "python3",
             str(GX_BIN_DIR / "run_gx"),
             "--fasta",
             str(Path("/sample-volume/") / fasta_name),
             "--out-dir",
-            str(Path("/output-volume/")),
+            "/output-volume/",
             "--gx-db",
             str(self.args.container_db / gxdb_name),
             "--tax-id",
             str(self.args.tax_id),
             "--split-fasta=" + ("T" if self.args.split_fasta else "F"),
         ]
+
         if self.args.out_basename:
             docker_args.extend(["--out-basename", self.args.out_basename])
         if self.args.blast_div:
             docker_args.extend(["--div", self.args.blast_div])
         if self.args.allow_same_species:
             docker_args.extend(["--allow-same-species", self.args.allow_same_species])
+        if self.args.env_file:
+            docker_args.extend(["--env-file", str(Path("/sample-volume/") / self.args.env_file)])
 
-        print(docker_args)
-        subprocess.run(docker_args, shell=False, check=True)
-
-        if container_engine == "docker":
-            subprocess.run([container_engine, "container", "rm", CONTAINER], shell=False, check=True)
+        self.safe_exec(docker_args)
 
     def run_verify_checksums(self):
         expanded_gxdb = Path(os.path.realpath(os.path.dirname(self.args.gx_db)))
@@ -193,23 +177,15 @@ class RunGX:
         container_engine = self.args.container_engine
         docker_image = self.args.docker_image
 
-        if container_engine == "docker":
-            subprocess.run([container_engine, "pull", docker_image], shell=False, check=True)
-
         mount_arg = ""
         if container_engine == "docker":
             mount_arg = "-v"
         elif container_engine == "singularity":
             mount_arg = "--bind"
 
-        name_args = []
-        if container_engine == "docker":
-            name_args = ["--name", "verify_checksums"]
-
         docker_args = [
             container_engine,
-            "run",
-            *name_args,
+            "run" if container_engine == "docker" else "exec",
             mount_arg,
             str(expanded_gxdb) + ":" + str(self.args.container_db),
             docker_image,
@@ -219,11 +195,7 @@ class RunGX:
             str(self.args.container_db / gxdb_name),
             "--debug",
         ]
-        print(docker_args)
-        subprocess.run(docker_args, shell=False, check=True)
-
-        if container_engine == "docker":
-            subprocess.run([container_engine, "container", "rm", "verify_checksums"], shell=False, check=True)
+        self.safe_exec(docker_args)
 
     def run(self):
         self.run_retrieve_db()
@@ -314,6 +286,12 @@ def main() -> int:
         action="store_true",
         help="database file's checksum will be verified",
     )
+    parser.add_argument(
+        "--env-file",
+        default=None,
+        help="file with environment variables",
+    )
+
     args = parser.parse_args()
     retcode = 0
     try:
