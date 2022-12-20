@@ -27,6 +27,6 @@ Staff Scientist
 RefSeq Eukaryotes Product Leader
 NCBI/NLM/NIH
 
-#0.3.0 Remarks
+## 0.3.0 Remarks
 
 With 0.3.0, you should see a decrease in false positives. The “classify” step now dynamically assesses which division(s) are likely to be primary (non-contaminant), and also adjusts the threshold. So if you’re running an assembly that is poorly represented in the database, it’ll require higher coverage hits. And the noise that we sometimes get in metazoa to insects, fish, etc is better recognized as FPs and excluded.
