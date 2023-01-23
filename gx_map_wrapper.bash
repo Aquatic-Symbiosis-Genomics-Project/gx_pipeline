@@ -33,6 +33,7 @@ SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/fcs-gx.0.3.0.sif
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+GX_PREFETCH=0 
 GXDB="/tmp/gx_mapper/$$/gxdb"
 mkdir -p $GXDB
 
