@@ -28,13 +28,13 @@ while getopts "f:t:ho:" opt; do
     esac
 done
 
-LOCAL_DB=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/0.4.0
-FCS_DEFAULT_SINGULARITY=/lustre/scratch123/tol/teams/grit/mh6/singularity/fcs-gx.0.4.0.sif
+export LOCAL_DB=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/0.4.0
+export FCS_DEFAULT_IMAGE=/lustre/scratch123/tol/teams/grit/mh6/singularity/fcs-gx.0.4.0.sif
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-GX_PREFETCH=0 
-GXDB="/tmp/gx_mapper/$$/gxdb"
+export GX_PREFETCH=0 
+export GXDB="/tmp/gx_mapper/$$/gxdb"
 mkdir -p $GXDB
 
 python3 $SCRIPT_DIR/fcs.py db get --mft "$LOCAL_DB/gxdb/all.manifest" --dir $GXDB
