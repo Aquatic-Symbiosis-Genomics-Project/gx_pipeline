@@ -174,7 +174,7 @@ class RunFCS:
         ]
 
         if hasattr(self.args, "gx_db"):
-            sync_files_args += [self.mount_arg, str(self.args.gx_db) + ":" + str(DEFAULT_CONTAINER_DB)]
+            sync_files_args += [self.mount_arg, str(self.args.gx_db) + ":" + str(DEFAULT_CONTAINER_DB)+",/lustre:/lustre"]
 
         sync_files_args += [
             self.args.docker_image,
@@ -200,7 +200,7 @@ class RunFCS:
         if GlobalStat.container_engine == "docker":
             docker_args += ["-i", "--rm"]
 
-        # add --env-envelop for both docker and
+        # add --env-envelop for both docker and singularity
         if hasattr(self.args, "gx_db"):
             docker_args += [self.mount_arg, str(self.args.gx_db) + ":" + str(DEFAULT_CONTAINER_DB)]
 

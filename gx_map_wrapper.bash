@@ -5,6 +5,13 @@
 # * uses realpath , which should be installed at Sanger by default
 # * make sure to enable the singularity env
 
+export MODULEPATH=/software/modules:$MODULEPATH
+module load ISG/singularity/
+export PATH=/software/singularity-v3.6.4/bin:$PATH
+export SINGULARITY_TMPDIR=/lustre/scratch123/tol/teams/grit/mh6/singularity/
+export SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
+export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
+
 usage() { 
 cat << EOF
 Usage: $0 [REQUIRED -f input.fasta, -t taxonid -o outputdir]
@@ -37,13 +44,13 @@ export GX_PREFETCH=0
 export GXDB="/tmp/gx_mapper/$$/gxdb"
 mkdir -p $GXDB
 
-python3 $SCRIPT_DIR/fcs.py db get --mft "$LOCAL_DB/gxdb/all.manifest" --dir $GXDB
+python3 ${SCRIPT_DIR}/fcs.py db get --mft "${LOCAL_DB}/gxdb/all.manifest" --dir $GXDB
 
 for file in "${multi[@]}"; do
 	fasta=`realpath $file`
 	# check if file does exist
 	if [[ -f $fasta ]]; then
-                python3 $SCRIPT_DIR/fcs.py screen all --fasta $fasta --out-dir $OUTDIR --gx-db "${GXDB}/gxdb" --tax-id $TAXID 
+                python3 $SCRIPT_DIR/fcs.py screen genome --fasta $fasta --out-dir $OUTDIR --gx-db $GXDB --tax-id $TAXID 
 	else
 		echo "$fasta doesn't exist"
 	fi
