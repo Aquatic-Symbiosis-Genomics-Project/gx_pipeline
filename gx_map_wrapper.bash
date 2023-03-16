@@ -8,7 +8,7 @@
 export MODULEPATH=/software/modules:$MODULEPATH
 module load ISG/singularity/
 export PATH=/software/singularity-v3.6.4/bin:$PATH
-export SINGULARITY_TMPDIR=/lustre/scratch123/tol/teams/grit/mh6/singularity/
+export SINGULARITY_TMPDIR=/lustre/scratch123/tol/teams/grit/mh6/singularity/$USER
 export SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
 export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
 
