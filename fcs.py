@@ -174,7 +174,10 @@ class RunFCS:
         ]
 
         if hasattr(self.args, "gx_db"):
-            sync_files_args += [self.mount_arg, str(self.args.gx_db) + ":" + str(DEFAULT_CONTAINER_DB)+",/lustre:/lustre"]
+            sync_files_args += [self.mount_arg, str(self.args.gx_db) + ":" + str(DEFAULT_CONTAINER_DB)]
+
+        if hasattr(self.args, "mft_dir"):
+            sync_files_args += [self.mount_arg, str(self.args.mft_dir) + ":" + "/mft-volume/"]
 
         sync_files_args += [
             self.args.docker_image,
@@ -200,7 +203,7 @@ class RunFCS:
         if GlobalStat.container_engine == "docker":
             docker_args += ["-i", "--rm"]
 
-        # add --env-envelop for both docker and singularity
+        # add --env-envelop for both docker and
         if hasattr(self.args, "gx_db"):
             docker_args += [self.mount_arg, str(self.args.gx_db) + ":" + str(DEFAULT_CONTAINER_DB)]
 
@@ -291,10 +294,15 @@ class RunFCS:
         argument, pos = find_argument(cmd, "--mft")
         if argument is None and "--help" not in cmd:
             print("Error: database source is required")
-            print('Please specify "--mft=url/to/db"')
+            print('Please specify "--mft=url/or/path/to/db"')
             print("Please see https://github.com/ncbi/fcs/wiki/")
             self.parser.print_usage()
             sys.exit()
+        elif argument is not None and Path(argument).exists():
+            self.args.mft_dir = Path(os.path.abspath(os.path.dirname(argument)))
+            mft_name = os.path.basename(argument)
+            replacement = str(Path("/mft-volume/") / mft_name)
+            cmd = cmd[:pos] + cmd[pos:].replace(argument, replacement, 1)
 
         self.joined_extra_args = cmd
 
