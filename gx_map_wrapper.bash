@@ -5,12 +5,12 @@
 # * uses realpath , which should be installed at Sanger by default
 # * make sure to enable the singularity env
 
-export MODULEPATH=/software/modules:$MODULEPATH
-module load ISG/singularity/
-export PATH=/software/singularity-v3.6.4/bin:$PATH
-export SINGULARITY_TMPDIR=/lustre/scratch123/tol/teams/grit/mh6/singularity/$USER
-export SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
-export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
+# export MODULEPATH=/software/modules:$MODULEPATH
+# module load ISG/singularity/
+# export PATH=/software/singularity-v3.6.4/bin:$PATH
+# export SINGULARITY_TMPDIR=/lustre/scratch123/tol/teams/grit/mh6/singularity/$USER
+# export SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
+# export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
 
 usage() { 
 cat << EOF
@@ -55,5 +55,6 @@ for file in "${multi[@]}"; do
 		echo "$fasta doesn't exist"
 	fi
 done
+chmod g+w $OUTDIR/*fcs_gx_report.txt $OUTDIR/*taxonomy.rpt
 
 rm -rf $GXDB
