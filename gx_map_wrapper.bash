@@ -35,7 +35,7 @@ while getopts "f:t:ho:" opt; do
     esac
 done
 
-export LOCAL_DB=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/0.4.0
+export LOCAL_DB=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/0.4.1
 export FCS_DEFAULT_IMAGE=/lustre/scratch123/tol/teams/grit/mh6/singularity/fcs-gx.0.4.0.sif
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -44,7 +44,7 @@ export GX_PREFETCH=0
 export GXDB="/tmp/gx_mapper/$$/gxdb"
 mkdir -p $GXDB
 
-python3 ${SCRIPT_DIR}/fcs.py db get --mft "${LOCAL_DB}/gxdb/all.manifest" --dir $GXDB
+python3 ${SCRIPT_DIR}/fcs.py db get --mft "${LOCAL_DB}/all.manifest" --dir $GXDB
 
 for file in "${multi[@]}"; do
 	fasta=`realpath $file`
