@@ -3,14 +3,6 @@
 # * use like that: bsub -q normal -o lsf.log -M 128000 -n 48 -R'select[mem>128000, tmp>500G] rusage[mem=128000, tmp=600G]' gx_wrapper.bash -f /my/fasta.fa.gz -o /my/outdir/ -t 1234
 # * as /tmp tends to be either SSD or tmpfs, there is a likelyhood, that we can get away with specifying less memory in the bsub 
 # * uses realpath , which should be installed at Sanger by default
-# * make sure to enable the singularity env
-
-# export MODULEPATH=/software/modules:$MODULEPATH
-# module load ISG/singularity/
-# export PATH=/software/singularity-v3.6.4/bin:$PATH
-# export SINGULARITY_TMPDIR=/lustre/scratch123/tol/teams/grit/mh6/singularity/$USER
-# export SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
-# export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
 
 usage() { 
 cat << EOF
