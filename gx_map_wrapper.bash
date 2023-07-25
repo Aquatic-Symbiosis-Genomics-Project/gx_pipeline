@@ -3,14 +3,6 @@
 # * use like that: bsub -q normal -o lsf.log -M 128000 -n 48 -R'select[mem>128000, tmp>500G] rusage[mem=128000, tmp=600G]' gx_wrapper.bash -f /my/fasta.fa.gz -o /my/outdir/ -t 1234
 # * as /tmp tends to be either SSD or tmpfs, there is a likelyhood, that we can get away with specifying less memory in the bsub 
 # * uses realpath , which should be installed at Sanger by default
-# * make sure to enable the singularity env
-
-# export MODULEPATH=/software/modules:$MODULEPATH
-# module load ISG/singularity/
-# export PATH=/software/singularity-v3.6.4/bin:$PATH
-# export SINGULARITY_TMPDIR=/lustre/scratch123/tol/teams/grit/mh6/singularity/$USER
-# export SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
-# export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_TMPDIR
 
 usage() { 
 cat << EOF
@@ -35,7 +27,7 @@ while getopts "f:t:ho:" opt; do
     esac
 done
 
-export LOCAL_DB=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/0.4.0
+export LOCAL_DB=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/0.4.1
 export FCS_DEFAULT_IMAGE=/lustre/scratch123/tol/teams/grit/mh6/singularity/fcs-gx.0.4.0.sif
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -44,7 +36,7 @@ export GX_PREFETCH=0
 export GXDB="/tmp/gx_mapper/$$/gxdb"
 mkdir -p $GXDB
 
-python3 ${SCRIPT_DIR}/fcs.py db get --mft "${LOCAL_DB}/gxdb/all.manifest" --dir $GXDB
+python3 ${SCRIPT_DIR}/fcs.py db get --mft "${LOCAL_DB}/all.manifest" --dir $GXDB
 
 for file in "${multi[@]}"; do
 	fasta=`realpath $file`
