@@ -37,7 +37,7 @@ export GXDB="/tmp/gx_mapper/$$/gxdb"
 mkdir -p $GXDB
 
 # in case someone else wants to write into the same directory
-chmod 666 /tmp/gx_mapper
+chmod 777 /tmp/gx_mapper
 
 python3 ${SCRIPT_DIR}/fcs.py db get --mft "${LOCAL_DB}/all.manifest" --dir $GXDB
 
