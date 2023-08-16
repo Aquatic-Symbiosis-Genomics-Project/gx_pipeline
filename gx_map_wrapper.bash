@@ -33,7 +33,7 @@ export FCS_DEFAULT_IMAGE=/lustre/scratch123/tol/teams/grit/mh6/singularity/fcs-g
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 export GX_PREFETCH=0 
-export GXDB="/tmp/gx_mapper/$$/gxdb"
+export GXDB="/tmp/gx_mapper/$$"
 mkdir -p $GXDB
 
 # in case someone else wants to write into the same directory
