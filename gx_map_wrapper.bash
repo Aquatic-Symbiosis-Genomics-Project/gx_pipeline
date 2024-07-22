@@ -28,7 +28,7 @@ while getopts "f:t:ho:" opt; do
 done
 
 export LOCAL_DB=/lustre/scratch124/tol/projects/asg/sub_projects/ncbi_decon/0.5
-export FCS_DEFAULT_IMAGE=/lustre/scratch123/tol/teams/grit/mh6/singularity/fcs-gx.0.5.sif
+export FCS_DEFAULT_IMAGE=/lustre/scratch123/tol/teams/grit/mh6/singularity/fcs-gx.0.5.4.sif
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
