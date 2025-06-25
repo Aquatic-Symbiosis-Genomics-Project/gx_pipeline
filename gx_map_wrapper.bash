@@ -1,6 +1,6 @@
 #!/bin/bash
 # USAGE:gx_mapper_wrapper.bash -f fasta1.gz -f fasta2.gz -o outdir -t taxid ... or something
-# * use like that: bsub -q normal -o lsf.log -M 256G -n 48 -R'select[mem>256G, tmp>500G] rusage[mem=256G, tmp=600G]' gx_wrapper.bash -f /my/fasta.fa.gz -o /my/outdir/ -t 1234
+# * use like that: bsub -q normal -o lsf.log -M 320G -n 48 -R'select[mem>320G, tmp>500G] rusage[mem=320G, tmp=600G]' gx_wrapper.bash -f /my/fasta.fa.gz -o /my/outdir/ -t 1234
 # * as /tmp tends to be either SSD or tmpfs, there is a likelyhood, that we can get away with specifying less memory in the bsub 
 # * uses realpath , which should be installed at Sanger by default
 
